@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Sakaar Homoeopathic Clinic</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -45,16 +46,15 @@
         transform: scale(1.05); /* Slightly increases the size of the button */
     }
 </style>
-<body style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;" class="bg-white text-gray-800 flex flex-col min-h-screen">
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
 
     <!-- Header -->
-    <header class="bg-[#0D5855]  text-white shadow-lg sticky top-0 z-50">
+    <header class="bg-red-800 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 flex-wrap">
             <a href="index.html" class="flex items-center group">
-                <img src="logo2.jpg" alt="Clinic Logo" class="w-14 h-14 rounded-full object-cover mr-4"> 
-                <span style="font-family: 'Quicksand', sans-serif;" class="text-3xl text-[#F1E34A] font-bold tracking-widest p-1 relative group hover:text-white transition duration-300">
-                    SAKAAR HOMOEOPATHY
-                    <!-- Underline span -->
+                <img src="logo.png" alt="Clinic Logo" class="w-12 h-12 rounded-full object-cover mr-4">
+                <span class="text-2xl sm:text-3xl font-extrabold tracking-wide relative group-hover:text-yellow-400 transition duration-300">
+                    Sakaar Homoeopathic Clinic
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </span>
             </a>
@@ -248,8 +248,8 @@
     </footer>
 
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, updateDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -264,6 +264,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+emailjs.init("XJ0w7wtg2pCTEXyAf");
 
 // Modal and Form Elements
 const modal = document.getElementById('appointmentModal');
@@ -441,16 +442,48 @@ function attachAppointmentActions() {
     const acceptBtns = document.querySelectorAll('.accept-btn');
     const declineBtns = document.querySelectorAll('.decline-btn');
 
+    // Initialize EmailJS (replace 'your_user_id' with your EmailJS User ID)
+    emailjs.init('XJ0w7wtg2pCTEXyAf');
+
     acceptBtns.forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const appointmentId = e.target.dataset.id;
             const confirmAccept = confirm("Are you sure you want to accept this appointment?");
             if (confirmAccept) {
-                await updateDoc(doc(db, "appointments", appointmentId), { status: 'Accepted' });
-                const statusSpan = document.getElementById(`status-${appointmentId}`);
-                statusSpan.textContent = 'Accepted';
-                statusSpan.classList.add('text-green-600');
-                statusSpan.classList.remove('text-red-600');
+                try {
+                    // Update the appointment status to "Accepted"
+                    await updateDoc(doc(db, "appointments", appointmentId), { status: 'Accepted' });
+
+                    // Update status in the DOM
+                    const statusSpan = document.getElementById(`status-${appointmentId}`);
+                    statusSpan.textContent = 'Accepted';
+                    statusSpan.classList.add('text-green-600');
+                    statusSpan.classList.remove('text-red-600');
+
+                    // Fetch appointment details
+                    const docRef = doc(db, "appointments", appointmentId);
+                    const appointmentSnapshot = await getDoc(docRef);
+                    const appointmentData = appointmentSnapshot.data();
+
+                    // Create a temporary form for sending the email
+                    const form = document.createElement('form');
+                    form.style.display = 'none';
+                    form.innerHTML = `
+                        <input type="text" name="to_name" value="${appointmentData.name}" />
+                        <input type="email" name="to_email" value="${appointmentData.email}" />
+                        <input type="text" name="date" value="${appointmentData.date}" />
+                        <input type="text" name="status" value="Accepted" />
+                    `;
+                    document.body.appendChild(form);
+
+                    // Send the form using EmailJS
+                    await emailjs.sendForm('service_x4wl48l', 'template_oyp3vgd', form);
+
+                    console.log("Email sent successfully");
+                    form.remove();
+                } catch (error) {
+                    console.error("Error updating document or sending email: ", error);
+                }
             }
         });
     });
@@ -460,16 +493,45 @@ function attachAppointmentActions() {
             const appointmentId = e.target.dataset.id;
             const confirmDecline = confirm("Are you sure you want to decline this appointment?");
             if (confirmDecline) {
-                await updateDoc(doc(db, "appointments", appointmentId), { status: 'Declined' });
-                const statusSpan = document.getElementById(`status-${appointmentId}`);
-                statusSpan.textContent = 'Declined';
-                statusSpan.classList.add('text-red-600');
-                statusSpan.classList.remove('text-green-600');
+                try {
+                    // Update the appointment status to "Declined"
+                    await updateDoc(doc(db, "appointments", appointmentId), { status: 'Declined' });
+
+                    // Update status in the DOM
+                    const statusSpan = document.getElementById(`status-${appointmentId}`);
+                    statusSpan.textContent = 'Declined';
+                    statusSpan.classList.add('text-red-600');
+                    statusSpan.classList.remove('text-green-600');
+
+                    // Fetch appointment details
+                    const docRef = doc(db, "appointments", appointmentId);
+                    const appointmentSnapshot = await getDoc(docRef);
+                    const appointmentData = appointmentSnapshot.data();
+
+                    // Create a temporary form for sending the email
+                    const form = document.createElement('form');
+                    form.style.display = 'none';
+                    form.innerHTML = `
+                        <input type="text" name="to_name" value="${appointmentData.name}" />
+                        <input type="email" name="to_email" value="${appointmentData.email}" />
+                        <input type="text" name="date" value="${appointmentData.date}" />
+                        <input type="text" name="status" value="Declined" />
+                    `;
+                    document.body.appendChild(form);
+
+                    // Send the form using EmailJS
+                    await emailjs.sendForm('service_x4wl48l', 'template_oyp3vgd', form);
+
+                    console.log("Email sent successfully");
+                    form.remove();
+                } catch (error) {
+                    console.error("Error updating document or sending email: ", error);
+                }
             }
         });
     });
-} 
-
+}
+ 
 // Open modal when the button is clicked
 updateOfflineAppointmentsBtn.addEventListener('click', () => {
     modal.classList.remove('hidden');
