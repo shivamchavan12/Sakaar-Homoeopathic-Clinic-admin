@@ -9,7 +9,7 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -46,15 +46,16 @@
         transform: scale(1.05); /* Slightly increases the size of the button */
     }
 </style>
-<body class="bg-white text-gray-800 flex flex-col min-h-screen">
+<body style="font-family: Cambria,serif;"  class="bg-white text-gray-800 flex flex-col min-h-screen">
 
     <!-- Header -->
-    <header class="bg-red-800 text-white shadow-lg sticky top-0 z-50">
+    <header class="bg-[#0D5855] text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 flex-wrap">
             <a href="index.html" class="flex items-center group">
-                <img src="logo.png" alt="Clinic Logo" class="w-12 h-12 rounded-full object-cover mr-4">
-                <span class="text-2xl sm:text-3xl font-extrabold tracking-wide relative group-hover:text-yellow-400 transition duration-300">
-                    Sakaar Homoeopathic Clinic
+                <img src="logo2.jpg" alt="Clinic Logo" class="w-14 h-14 rounded-full object-cover mr-4"> 
+                <span style="font-family: 'Quicksand', sans-serif;" class="text-3xl text-[#F1E34A] font-bold tracking-widest p-1 relative group hover:text-white transition duration-300">
+                    SAKAAR HOMOEOPATHY
+                    <!-- Underline span -->
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </span>
             </a>
@@ -77,7 +78,7 @@
         </div>
     
         <!-- Mobile Menu (hidden by default) -->
-        <div id="mobileMenu" class="lg:hidden bg-red-800 text-white py-4 px-6 space-y-4 absolute top-0 left-0 w-full z-40 hidden">
+        <div id="mobileMenu" class="lg:hidden bg-[#0D5855] text-white py-4 px-6 space-y-4 absolute top-0 left-0 w-full z-40 hidden">
             <a href="#upcomingappointments-section" class="block text-lg hover:text-yellow-400">Upcoming Appointments</a>
             <a href="#pastappointments-section" class="block text-lg hover:text-yellow-400">Past Appointments</a>
             <a href="#Statistics" class="block text-lg hover:text-yellow-400">Statistics</a>
@@ -210,7 +211,7 @@
 
             <!-- Offline Appointments -->
             <div class="bg-white p-6 rounded-lg shadow-xl text-center hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out" data-aos="fade-up">
-                <h4 class="text-lg font-bold text-gray-800">Offile Appointments</h4>
+                <h4 class="text-lg font-bold text-gray-800">Offline Appointments</h4>
                 <p id="offlineAppointments" class="text-3xl font-semibold text-yellow-600 mt-2">0</p>
             </div>
 
