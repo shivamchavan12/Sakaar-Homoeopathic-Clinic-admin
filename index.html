@@ -265,7 +265,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-emailjs.init("XJ0w7wtg2pCTEXyAf");
+emailjs.init("ivqtxHaFbfs28Nnv0");
 
 // Modal and Form Elements
 const modal = document.getElementById('appointmentModal');
@@ -300,12 +300,6 @@ async function loadAppointments() {
     // Sort appointments by date
     appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // // Separate appointments into past and upcoming
-    // const now = new Date(); // Current date and time
-    // const pastAppointments = appointments.filter(a => new Date(a.date) < now);
-    // const upcomingAppointments = appointments.filter(a => new Date(a.date) >= now);
-
-    // Separate appointments into past, today, and upcoming
 // Get the current date (without time) for comparison
 const now = new Date();
 now.setHours(0, 0, 0, 0); // Set time to midnight to exclude time from the comparison
@@ -478,7 +472,7 @@ function attachAppointmentActions() {
                     document.body.appendChild(form);
 
                     // Send the form using EmailJS
-                    await emailjs.sendForm('service_x4wl48l', 'template_oyp3vgd', form);
+                    await emailjs.sendForm('service_cfyvjy7', 'template_s9gbsfv', form);
 
                     console.log("Email sent successfully");
                     form.remove();
