@@ -265,7 +265,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-emailjs.init("ivqtxHaFbfs28Nnv0");
+emailjs.init('ivqtxHaFbfs28Nnv0');
 
 // Modal and Form Elements
 const modal = document.getElementById('appointmentModal');
@@ -438,7 +438,7 @@ function attachAppointmentActions() {
     const declineBtns = document.querySelectorAll('.decline-btn');
 
     // Initialize EmailJS (replace 'your_user_id' with your EmailJS User ID)
-    emailjs.init('XJ0w7wtg2pCTEXyAf');
+    emailjs.init('ivqtxHaFbfs28Nnv0');
 
     acceptBtns.forEach(btn => {
         btn.addEventListener('click', async (e) => {
@@ -515,7 +515,7 @@ function attachAppointmentActions() {
                     document.body.appendChild(form);
 
                     // Send the form using EmailJS
-                    await emailjs.sendForm('service_x4wl48l', 'template_oyp3vgd', form);
+                    await emailjs.sendForm('service_cfyvjy7', 'template_s9gbsfv', form);
 
                     console.log("Email sent successfully");
                     form.remove();
