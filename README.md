@@ -35,11 +35,3 @@ This tool ensures that the clinic's administrative tasks are handled efficiently
 
 ---
 
-## 🌐 Live Demo
-
-Access the Admin Panel here:  
-🔗 [sakaar-homoeopathic-clinic-admin.vercel.app](https://sakaar-homoeopathic-clinic-admin.vercel.app)
-
-*Note: Access is restricted to authorized clinic staff.*
-
----
